@@ -1,3 +1,5 @@
+// Why putting this content in an utils file? => It's a layer between the frontend and this additional library (easier if I have to make a change/update later)
+
 import { initializeApp } from "firebase/app";
 
 import {
@@ -5,6 +7,7 @@ import {
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -24,19 +27,26 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 // GoogleAuthProvider is a class
 // In order to use this Google authentification, we need to first initialize a provider using this GoogleAuthProvider class
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
 // These custom parameters will take some kind of configuration object to tell different ways we want this Google auth provider to behave
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
   prompt: "select_account", // it means that every time somebody interacts with our provider, we want to always force them to select an account.
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore(); //this point to our database
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
+  if (!userAuth) return;
   const userDocRef = doc(db, "users", userAuth.uid);
 
   const userSnapshot = await getDoc(userDocRef);
@@ -55,6 +65,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         displayName,
         email,
         createdAt,
+        ...additionalInformation,
       });
     } catch (error) {
       console.log("error creating the user", error.message);
@@ -65,4 +76,9 @@ export const createUserDocumentFromAuth = async (userAuth) => {
   // nothing
 
   return userDocRef;
+};
+
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
