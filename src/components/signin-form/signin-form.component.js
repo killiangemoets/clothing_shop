@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
@@ -8,6 +8,9 @@ import {
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 
+// We need to import the context
+// import { UserContext } from "../../contexts/user.context";
+
 import "./signin-form.style.scss";
 
 const defaultformFields = {
@@ -16,9 +19,13 @@ const defaultformFields = {
 };
 
 const SignInForm = () => {
-  const [formFields, setFormFields] = useState(defaultformFields);
+  // console.log("hit sign-in");
 
+  const [formFields, setFormFields] = useState(defaultformFields);
   const { email, password } = formFields;
+
+  // We use the user context and we get back an object
+  // const { setCurrentUser } = useContext(UserContext);
 
   const resetFormFields = () => {
     setFormFields(defaultformFields);
@@ -27,7 +34,9 @@ const SignInForm = () => {
   const signInWithGoogle = async () => {
     const response = await signInWithGooglePopup();
     console.log(response);
-    await createUserDocumentFromAuth(response.user);
+    // setCurrentUser(response.user);
+    // createUserDocumentFromAuth(response.user);
+    // We can now move it into the user context
   };
 
   const handleChange = (event) => {
@@ -45,7 +54,8 @@ const SignInForm = () => {
         email,
         password
       );
-      console.log(response);
+      // console.log(response);
+      // setCurrentUser(response.user);
       resetFormFields();
     } catch (error) {
       switch (error.code) {

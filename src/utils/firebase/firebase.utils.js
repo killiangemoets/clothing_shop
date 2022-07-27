@@ -9,6 +9,8 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -52,9 +54,9 @@ export const createUserDocumentFromAuth = async (
 
   const userSnapshot = await getDoc(userDocRef);
 
-  console.log(userDocRef);
-  console.log(userSnapshot);
-  console.log(userSnapshot.exists());
+  // console.log(userDocRef);
+  // console.log(userSnapshot);
+  // console.log(userSnapshot.exists());
 
   // If user data does not exist
   // I want to create/set the document with the data from the userAuth in my collection. And I wanna set it using the userSnapshot bc it's already pointing to a specific place in a collection for the data that we want
@@ -88,3 +90,12 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await signInWithEmailAndPassword(auth, email, password);
 };
+
+export const signOutUser = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback); // Change when a user sign in or sign out and so it calls our callback function
+
+// next: callback,
+// error: errorCallback,
+// complete: completeCallback

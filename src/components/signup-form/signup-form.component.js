@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
@@ -9,6 +9,8 @@ import Button from "../button/button.component";
 
 import "./signup-form.style.scss";
 
+// import { UserContext } from "../../contexts/user.context";
+
 const defaultformFields = {
   displayName: "",
   email: "",
@@ -17,9 +19,12 @@ const defaultformFields = {
 };
 
 const SignUpForm = () => {
+  // console.log("hit sign-up");
   const [formFields, setFormFields] = useState(defaultformFields);
 
   const { displayName, email, password, confirmPassword } = formFields;
+
+  //   const { setCurrentUser } = useContext(UserContext);
 
   const resetFormFields = () => {
     setFormFields(defaultformFields);
@@ -46,6 +51,10 @@ const SignUpForm = () => {
         password
       );
       //   console.log(response);
+
+      //   setCurrentUser(response.user);
+
+      // We still need to do it here bc we need the display name
       const userDocRef = await createUserDocumentFromAuth(response.user, {
         displayName,
       });
