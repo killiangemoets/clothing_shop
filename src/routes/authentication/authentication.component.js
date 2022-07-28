@@ -10,7 +10,7 @@
 import SignUpForm from "../../components/signup-form/signup-form.component";
 import SignInForm from "../../components/signin-form/signin-form.component";
 
-import "./authentication.style.scss";
+import { AuthenticationContainer } from "./authentication.style.js";
 
 const Authentication = () => {
   // const logGoogleRedirectUser = async () => {
@@ -37,14 +37,14 @@ const Authentication = () => {
   // };
 
   return (
-    <div className="authentication-container">
+    <AuthenticationContainer>
       {/* <button onClick={logGoogleUser}>Sign in with Google Popup</button> */}
       {/* <button onClick={signInWithGoogleRedirect}>
         Sign in with Google Redirect
       </button> */}
       <SignInForm />
       <SignUpForm />
-    </div>
+    </AuthenticationContainer>
   );
 };
 

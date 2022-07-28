@@ -11,7 +11,7 @@ import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 // We need to import the context
 // import { UserContext } from "../../contexts/user.context";
 
-import "./signin-form.style.scss";
+import { SignInContainer, ButtonsContainer } from "./signin-form.style.js";
 
 const defaultformFields = {
   email: "",
@@ -72,7 +72,7 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="sign-up-container">
+    <SignInContainer>
       <h2>Already have an account?</h2>
       <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
@@ -93,7 +93,7 @@ const SignInForm = () => {
           value={password}
         />
 
-        <div className="buttons-container">
+        <ButtonsContainer>
           <Button type="submit">Sign In</Button>
           <Button
             type="button"
@@ -102,9 +102,9 @@ const SignInForm = () => {
           >
             Google Sign In
           </Button>
-        </div>
+        </ButtonsContainer>
       </form>
-    </div>
+    </SignInContainer>
   );
 };
 
