@@ -1,4 +1,6 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useReducer } from "react";
+
+import { createAction } from "../utils/reducer/reducer.utils";
 
 const addCartItem = (cartItems, productToAdd) => {
   // find if cartItems contains product to add
@@ -40,44 +42,107 @@ export const CartContext = createContext({
   setIsCartOpen: () => {},
   cartItems: [],
   addItemToCart: () => {},
+  removeItemFromCart: () => {},
+  clearItemFromCart: () => {},
   cartCount: 0,
   total: 0,
 });
 
+const INITIAL_STATE = {
+  isCartOpen: false,
+  cartItems: [],
+  cartCount: 0,
+  total: 0,
+};
+
+export const CART_ACTION_TYPES = {
+  SET_CART_ITEMS: "SET_CART_ITEMS",
+  SET_IS_CART_OPEN: "SET_IS_CART_OPEN",
+};
+
+const cartReducer = (state, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case "SET_CART_ITEMS":
+      return { ...state, ...payload };
+    case "SET_IS_CART_OPEN":
+      return { ...state, isCartOpen: payload };
+    default:
+      throw new Error(`Unhandled type ${type} in cartReducer`);
+  }
+};
+
 export const CartProvider = ({ children }) => {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
-  const [cartCount, setCartCount] = useState(0);
-  const [cartTotal, setCartTotal] = useState(0);
+  // const [isCartOpen, setIsCartOpen] = useState(false);
+  // const [cartItems, setCartItems] = useState([]);
+  // const [cartCount, setCartCount] = useState(0);
+  // const [cartTotal, setCartTotal] = useState(0);
 
-  // One way to update the cartCount is by using the useEffect hook.
-  useEffect(() => {
-    const newCartCount = cartItems.reduce(
-      (total, item) => total + item.quantity,
-      0
-    );
-    setCartCount(newCartCount);
-  }, [cartItems]);
+  // // One way to update the cartCount is by using the useEffect hook.
+  // useEffect(() => {
+  //   const newCartCount = cartItems.reduce(
+  //     (total, item) => total + item.quantity,
+  //     0
+  //   );
+  //   setCartCount(newCartCount);
+  // }, [cartItems]);
 
-  // We use another useEffect Hook beause one of the best practice when using use effect is to make sure it just governs one singular responsibility
-  useEffect(() => {
-    const newTotal = cartItems.reduce(
+  // // We use another useEffect Hook beause one of the best practice when using use effect is to make sure it just governs one singular responsibility
+  // useEffect(() => {
+  //   const newCartTotal = cartItems.reduce(
+  //     (total, item) => total + item.quantity * item.price,
+  //     0
+  //   );
+  //   setCartTotal(newCartTotal);
+  // }, [cartItems]);
+
+  const [state, dispatch] = useReducer(cartReducer, INITIAL_STATE);
+
+  const { cartItems, cartCount, cartTotal, isCartOpen } = state;
+
+  const setIsCartOpen = (bool) => {
+    dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool));
+  };
+
+  const updateCartItemsReducer = (newCartItems) => {
+    // generate newCartTotal
+    const newCartTotal = newCartItems.reduce(
       (total, item) => total + item.quantity * item.price,
       0
     );
-    setCartTotal(newTotal);
-  }, [cartItems]);
+    // generate newCartCount
+    const newCartCount = newCartItems.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+
+    // Dispatch new action with payload = {
+    //   newCartItems,
+    //   newCartTotal,
+    //   nexCartCount
+    // }
+    dispatch(
+      createAction(CART_ACTION_TYPES.SET_CART_ITEMS, {
+        cartItems: newCartItems,
+        cartTotal: newCartTotal,
+        cartCount: newCartCount,
+      })
+    );
+  };
 
   const addItemToCart = (productToAdd) => {
-    setCartItems(addCartItem(cartItems, productToAdd));
+    const newCartItems = addCartItem(cartItems, productToAdd);
+    updateCartItemsReducer(newCartItems);
   };
 
   const removeItemFromCart = (productToRemove) => {
-    setCartItems(removeCartItem(cartItems, productToRemove));
+    const newCartItems = removeCartItem(cartItems, productToRemove);
+    updateCartItemsReducer(newCartItems);
   };
 
   const clearItemFromCart = (productToClear) => {
-    setCartItems(clearCartItem(cartItems, productToClear));
+    const newCartItems = clearCartItem(cartItems, productToClear);
+    updateCartItemsReducer(newCartItems);
   };
 
   const value = {

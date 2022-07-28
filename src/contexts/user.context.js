@@ -1,9 +1,11 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useReducer } from "react";
 
 import {
   onAuthStateChangedListener,
   createUserDocumentFromAuth,
 } from "../utils/firebase/firebase.utils";
+
+import { createAction } from "../utils/reducer/reducer.utils";
 
 // Actual value you want to access
 export const UserContext = createContext({
@@ -11,9 +13,50 @@ export const UserContext = createContext({
   setCurrentUser: () => null, // This is the default value of a set function
 });
 
+export const USER_ACTION_TYPES = {
+  SET_CURRENT_USER: "SET_CURRENT_USER",
+};
+
+const userReducer = (state, action) => {
+  // console.log("dispatched");
+  // console.log(action);
+  const { type, payload } = action;
+  switch (type) {
+    case USER_ACTION_TYPES.SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: payload,
+      };
+    default:
+      throw new Error(`Unhandled type ${type} in userReducer`);
+  }
+};
+
+const INITIAL_STATE = {
+  currentUser: null,
+};
+
 // This is the functional component
 export const UserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  // const [currentUser, setCurrentUser] = useState(null);
+
+  //  INSTEAD OF USING USESTATE, WE NOW USE A REDUCER
+
+  // UseReduce takes 2 arguments:
+  // - the reducer
+  // - the initial value
+  // We get back :
+  // - the state object, i.e the current value being stored bythe reducer
+  // - the dispatch function, i.e. a function that whenever you it, you pass it an action object.
+  const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
+
+  const { currentUser } = state;
+
+  // console.log(currentUser);
+
+  const setCurrentUser = (user) => {
+    dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
+  };
   const value = { currentUser, setCurrentUser };
 
   useEffect(() => {
