@@ -8,7 +8,11 @@ import { rootReducer } from "./root-reducer";
 // import logger from "redux-logger";
 import { loggerMiddleware } from "./middleware/logger";
 
-import thunk from "redux-thunk";
+//// SAGA REPLACES THUNK !!!! ////
+// import thunk from "redux-thunk";
+import createSagaMiddleware from "redux-saga";
+
+import { rootSaga } from "./root-saga";
 
 // Middlewares are kind of little library helpers that run before an action hist the reducer
 
@@ -25,6 +29,8 @@ const curryFuc = (a) => (b, c) => {
 const with3 = curryFuc(3);
 with3(2, 4); // 3+2-4
 
+const sagaMiddleware = createSagaMiddleware();
+
 // const middleWares = [logger];
 // We can create a middleWare by ourself: see loggerMiddleware
 
@@ -33,7 +39,8 @@ with3(2, 4); // 3+2-4
 // This middleWare is of course only for development!
 const middleWares = [
   process.env.NODE_ENV === "development" && loggerMiddleware,
-  thunk,
+  // thunk,
+  sagaMiddleware,
 ].filter(Boolean);
 // If we are not in development mode, we will pass false into this array, and we don't want to pass a boolean value into our middleWares array, so we use filter to remove this boolean value from our array
 
@@ -79,5 +86,7 @@ export const store = createStore(
   undefined,
   composedEnhancers
 );
+
+sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
