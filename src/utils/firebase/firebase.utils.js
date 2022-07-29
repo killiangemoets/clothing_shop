@@ -22,6 +22,7 @@ import {
   writeBatch,
   query,
   getDocs,
+  DocumentSnapshot,
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -80,14 +81,15 @@ export const getCategoriesAndDocuments = async () => {
   //That gives me an object that I can get a snapshot from:
   const querySnapshot = await getDocs(q);
 
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    // console.log(docSnapshot.data());
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 
-  return categoryMap;
+  // const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+  //   // console.log(docSnapshot.data());
+  //   const { title, items } = docSnapshot.data();
+  //   acc[title.toLowerCase()] = items;
+  //   return acc;
+  // }, {});
+  // return categoryMap;
 };
 
 export const createUserDocumentFromAuth = async (
