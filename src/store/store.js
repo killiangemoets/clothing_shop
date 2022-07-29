@@ -61,8 +61,9 @@ const composedEnhancers = composedEnhancer(applyMiddleware(...middleWares));
 const persistConfig = {
   key: "root", // the key is the part that we want to start with, and "root" says that I want to persist the whole thing
   storage,
-  blackList: ["user"], //We add a black list with the value we don't wanna persist (we can also add a white list with the value we wanne persist)
+  //   blackList: ["user"], //We add a black list with the value we don't wanna persist (we can also add a white list with the value we wanne persist)
   // We don't need to persist the user bc it comes from getAuth.
+  whiteList: ["cart"], // we don't need to store the categories bc they load when we load the page
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

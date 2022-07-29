@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
       if (user) createUserDocumentFromAuth(user);
-      console.log("app.js", user);
+      // console.log("app.js", user);
 
       dispatch(setCurrentUser(user));
     });

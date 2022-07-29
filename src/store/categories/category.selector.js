@@ -3,7 +3,7 @@ import { createSelector } from "reselect";
 // To save the result of a pure function so when we enter the same inputs again we can give back the output directly without running the function.
 
 const selectCategoryReducer = (state) => {
-  console.log("selector 1 fired");
+  // console.log("selector 1 fired");
   return state.categories;
 }; // state.cotegories is the categories slice (bc state also containes user and cart)
 
@@ -13,14 +13,19 @@ const selectCategoryReducer = (state) => {
 
 // so since we are using a function for the first argument, the output of the first argument need to be the input of the second (the output of selectCategoryReducer is categoriesSlice)
 
+export const selectCategoriesIsLoading = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice) => categoriesSlice.isLoading
+);
+
 export const selectCatagories = createSelector(
   // [selectCategoryReducer, selectCurrentUSer],
   // (categories, currentUser) => {}
   [selectCategoryReducer],
   (categoriesSlice) => {
-    console.log("selector 2 fired");
-    console.log("categoriesSlice", categoriesSlice);
-    console.log("categories", categoriesSlice.categories);
+    // console.log("selector 2 fired");
+    // console.log("categoriesSlice", categoriesSlice);
+    // console.log("categories", categoriesSlice.categories);
     return categoriesSlice.categories;
   }
 );
@@ -30,7 +35,7 @@ export const selectCatagories = createSelector(
 export const selectCategoriesMap = createSelector(
   [selectCatagories],
   (categories) => {
-    console.log("selector 3 fired");
+    // console.log("selector 3 fired");
     return categories.reduce((acc, category) => {
       const { title, items } = category;
       acc[title.toLowerCase()] = items;
