@@ -18,9 +18,11 @@ import {
 // import { UserContext } from "../../contexts/user.context";
 // import { CartContext } from "../../contexts/cart.context";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentUser } from "../../store/user/user.selector";
 import { selectIsCartOpen } from "../../store/cart/cart.selector";
+
+import { signOutStart } from "../../store/user/user.action";
 
 const Navigation = () => {
   // useSelector is a hook that you pass a selector function
@@ -37,10 +39,14 @@ const Navigation = () => {
   const isCartOpen = useSelector(selectIsCartOpen);
   // console.log(currentUser);
 
-  const signOutHandler = async () => {
-    await signOutUser();
-    //   setCurrentUser(null);
-  };
+  const dispatch = useDispatch();
+
+  // const signOutHandler = async () => {
+  //   await signOutUser();
+  //   // setCurrentUser(null);
+  // };
+  // With Saga:
+  const signOutHandler = () => dispatch(signOutStart());
 
   return (
     <Fragment>

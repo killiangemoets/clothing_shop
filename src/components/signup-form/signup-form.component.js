@@ -1,4 +1,7 @@
 import { useState, useContext } from "react";
+
+import { useDispatch } from "react-redux";
+
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
@@ -8,6 +11,7 @@ import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 
 import { SignUpContainer } from "./signup-form.style.js";
+import { signUpStart } from "../../store/user/user.action";
 
 // import { UserContext } from "../../contexts/user.context";
 
@@ -23,6 +27,8 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultformFields);
 
   const { displayName, email, password, confirmPassword } = formFields;
+
+  const dispatch = useDispatch();
 
   //   const { setCurrentUser } = useContext(UserContext);
 
@@ -46,19 +52,22 @@ const SignUpForm = () => {
     }
 
     try {
-      const response = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      //   console.log(response);
+      // const response = await createAuthUserWithEmailAndPassword(
+      //   email,
+      //   password
+      // );
+      // //   console.log(response);
 
-      //   setCurrentUser(response.user);
+      // //   setCurrentUser(response.user);
 
-      // We still need to do it here bc we need the display name
-      const userDocRef = await createUserDocumentFromAuth(response.user, {
-        displayName,
-      });
-      //   console.log(userDocRef);
+      // // We still need to do it here bc we need the display name
+      // const userDocRef = await createUserDocumentFromAuth(response.user, {
+      //   displayName,
+      // });
+      // //   console.log(userDocRef);
+
+      //With Saga:
+      dispatch(signUpStart(email, password, displayName));
 
       resetFormFields();
     } catch (error) {

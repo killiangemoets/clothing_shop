@@ -10,20 +10,22 @@ import { useDispatch } from "react-redux";
 import {
   onAuthStateChangedListener,
   createUserDocumentFromAuth,
+  getCurrentUser,
 } from "./utils/firebase/firebase.utils";
 import { setCurrentUser } from "./store/user/user.action";
+import { checkUserSession } from "./store/user/user.action";
 
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      if (user) createUserDocumentFromAuth(user);
-      // console.log("app.js", user);
+    // const unsubscribe = onAuthStateChangedListener((user) => {
+    //   if (user) createUserDocumentFromAuth(user);
+    //   // console.log("app.js", user);
+    //   dispatch(setCurrentUser(user));
+    // });
+    // return unsubscribe;
 
-      dispatch(setCurrentUser(user));
-    });
-
-    return unsubscribe;
+    dispatch(checkUserSession());
   }, [dispatch]); //Don't need to pass the dispatch inside bc dispatch is never gonna change
   return (
     <Routes>

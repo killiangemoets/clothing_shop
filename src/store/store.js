@@ -5,7 +5,7 @@ import storage from "redux-persist/lib/storage";
 
 import { rootReducer } from "./root-reducer";
 
-// import logger from "redux-logger";
+import logger from "redux-logger";
 import { loggerMiddleware } from "./middleware/logger";
 
 //// SAGA REPLACES THUNK !!!! ////
@@ -23,11 +23,11 @@ import { rootSaga } from "./root-saga";
 //     return a + b - c;
 //   };
 // };
-const curryFuc = (a) => (b, c) => {
-  return a + b - c;
-};
-const with3 = curryFuc(3);
-with3(2, 4); // 3+2-4
+// const curryFuc = (a) => (b, c) => {
+//   return a + b - c;
+// };
+// const with3 = curryFuc(3);
+// with3(2, 4); // 3+2-4
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -38,7 +38,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 // This middleWare is of course only for development!
 const middleWares = [
-  process.env.NODE_ENV === "development" && loggerMiddleware,
+  process.env.NODE_ENV === "development" && logger,
+  // loggerMiddleware,
   // thunk,
   sagaMiddleware,
 ].filter(Boolean);

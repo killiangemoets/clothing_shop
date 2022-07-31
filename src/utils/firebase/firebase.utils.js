@@ -125,7 +125,10 @@ export const createUserDocumentFromAuth = async (
   // If user data exists
   // nothing
 
-  return userDocRef;
+  // return userDocRef;
+
+  // Now we want the userSnapshot bc it contains the data while the userDocRef is just a pointer to the space where the data could live
+  return userSnapshot;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
@@ -146,3 +149,16 @@ export const onAuthStateChangedListener = (callback) =>
 // next: callback,
 // error: errorCallback,
 // complete: completeCallback
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
+};

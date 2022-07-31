@@ -13,6 +13,12 @@ import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 
 import { SignInContainer, ButtonsContainer } from "./signin-form.style.js";
 
+import { useDispatch } from "react-redux";
+import {
+  googleSignInStart,
+  emailSignInStart,
+} from "../../store/user/user.action";
+
 const defaultformFields = {
   email: "",
   password: "",
@@ -20,6 +26,8 @@ const defaultformFields = {
 
 const SignInForm = () => {
   // console.log("hit sign-in");
+
+  const dispatch = useDispatch();
 
   const [formFields, setFormFields] = useState(defaultformFields);
   const { email, password } = formFields;
@@ -32,11 +40,14 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    const response = await signInWithGooglePopup();
-    console.log(response);
+    // const response = await signInWithGooglePopup();
+    // console.log(response);
+    // We can now move it into the user context
     // setCurrentUser(response.user);
     // createUserDocumentFromAuth(response.user);
-    // We can now move it into the user context
+    //With Saga:
+
+    dispatch(googleSignInStart());
   };
 
   const handleChange = (event) => {
@@ -47,27 +58,32 @@ const SignInForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("submit");
+    // console.log("submit");
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
+      // const response = await signInAuthUserWithEmailAndPassword(
+      //   email,
+      //   password
+      // );
+
+      //With Saga:
+      dispatch(emailSignInStart(email, password));
+
       // console.log(response);
       // setCurrentUser(response.user);
       resetFormFields();
     } catch (error) {
-      switch (error.code) {
-        case "auth/wrong-password":
-          alert("Incorrect password for email");
-          break;
-        case "auth/user-not-found":
-          alert("No user associated with this email");
-          break;
-        default:
-          console.log(error);
-      }
+      // switch (error.code) {
+      //   case "auth/wrong-password":
+      //     alert("Incorrect password for email");
+      //     break;
+      //   case "auth/user-not-found":
+      //     alert("No user associated with this email");
+      //     break;
+      //   default:
+      //     console.log(error);
+      // }
+      console.log("user sign in failed", error);
     }
   };
 

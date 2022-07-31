@@ -10,14 +10,14 @@ import {
 import { CATEGORIES_ACTION_TYPES } from "./category.types";
 
 export function* fetchCategoriesAsync() {
-  //Note: we cannot have async await in the generator
-  // Instead of await, we need to yield
-
-  // Note 2: when you have a function and you wanna turn it into an effect, you use the call keyword
-  // The call method takes different arguments:
-  // - a function
-  // - the parameters/arguments for this  function
   try {
+    //Note: we cannot have async await in the generator
+    // Instead of await, we need to yield
+
+    // Note 2: when you have a function and you wanna turn it into an effect, you use the call keyword
+    // The call method takes different arguments:
+    // - a function
+    // - the parameters/arguments for this function
     const categoriesArray = yield call(getCategoriesAndDocuments);
 
     // Instead of dispatch, we call put
@@ -42,7 +42,7 @@ export function* onFetchCategories() {
 export function* categoriesSaga() {
   // all is an effect that run everything inside and only complete when all of it is done
   // all takes an array of different things that we are calling
-  yield all([]);
+  yield all([call(onFetchCategories)]);
 }
 
 // BIG NOTE: Generators respond to actions the same way that reducers do inside of their switch
