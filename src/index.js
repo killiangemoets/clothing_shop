@@ -9,10 +9,11 @@ import reportWebVitals from "./reportWebVitals";
 // import { CartProvider } from "./contexts/cart.context";
 
 import { Provider } from "react-redux";
-import { store } from "./store/store";
-
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor } from "./store/store";
+import { store, persistor } from "./store/store";
+
+import { Elements } from "@stripe/react-stripe-js";
+import { stripePromise } from "./utils/stripe/stripe.utils";
 
 import "./index.scss";
 
@@ -26,7 +27,10 @@ root.render(
           {/* <UserProvider> */}
           {/* <CategoriesProvider> */}
           {/* <CartProvider> */}
-          <App />
+          {/* Elements is similar to a provider. Any components inside of this Elements will now have access to the stripe elements */}
+          <Elements stripe={stripePromise}>
+            <App />
+          </Elements>
           {/* </CartProvider> */}
           {/* </CategoriesProvider> */}
           {/* </UserProvider> */}
