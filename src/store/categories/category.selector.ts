@@ -2,7 +2,10 @@ import { createSelector } from "reselect";
 //createSelector creates for us a memorised selector
 // To save the result of a pure function so when we enter the same inputs again we can give back the output directly without running the function.
 
-const selectCategoryReducer = (state) => {
+import { CategoriesState } from "./category.reducer";
+import { CategoryMap } from "./category.types";
+
+const selectCategoryReducer = (state): CategoriesState => {
   // console.log("selector 1 fired");
   return state.categories;
 }; // state.cotegories is the categories slice (bc state also containes user and cart)
@@ -34,13 +37,13 @@ export const selectCatagories = createSelector(
 // It will memoize a second time
 export const selectCategoriesMap = createSelector(
   [selectCatagories],
-  (categories) => {
+  (categories): CategoryMap => {
     // console.log("selector 3 fired");
     return categories.reduce((acc, category) => {
       const { title, items } = category;
       acc[title.toLowerCase()] = items;
       return acc;
-    }, {});
+    }, {} as CategoryMap);
   }
 );
 
