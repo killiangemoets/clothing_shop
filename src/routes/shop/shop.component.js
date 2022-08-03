@@ -2,7 +2,7 @@ import CategoriesPreview from "../categories-preview/categories-preview.componen
 import Category from "../category/category.component";
 
 import { Routes, Route } from "react-router-dom";
-import { CategoriesProvider } from "../../contexts/categories.context";
+// import { CategoriesProvider } from "../../contexts/categories.context";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -27,12 +27,12 @@ const Shop = () => {
     // getCategoriesMap();
   }, []);
   return (
-    <CategoriesProvider>
-      <Routes>
-        <Route index element={<CategoriesPreview />}></Route>
-        <Route path=":category" element={<Category />}></Route>
-      </Routes>
-    </CategoriesProvider>
+    // <CategoriesProvider>
+    <Routes>
+      <Route index element={<CategoriesPreview />}></Route>
+      <Route path=":category" element={<Category />}></Route>
+    </Routes>
+    // </CategoriesProvider>
   );
 };
 

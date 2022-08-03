@@ -11,6 +11,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  NextOrObserver,
+  User, // Interface given by firebase to define a user
 } from "firebase/auth";
 
 import {
@@ -23,7 +25,10 @@ import {
   query,
   getDocs,
   DocumentSnapshot,
+  QueryDocumentSnapshot, // Given by firebase to define a Snapshot
 } from "firebase/firestore";
+
+import { Category } from "../../store/categories/category.types";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -55,11 +60,16 @@ export const signInWithGoogleRedirect = () =>
 
 export const db = getFirestore(); //this point to our database
 
-export const addCollectionAndDocuments = async (
-  collectionKey,
-  objectsToAdd,
-  field
-) => {
+export type ObjectToAdd = {
+  title: String;
+};
+
+export const addCollectionAndDocuments = async <T extends ObjectToAdd>(
+  collectionKey: string,
+  objectsToAdd: T[]
+): Promise<void> => {
+  // With async function you always return a promise and within the promise you havea value.
+  // Here we don't return any value so we write void
   const collectionRef = collection(db, collectionKey);
   const batch = writeBatch(db);
 
@@ -74,14 +84,17 @@ export const addCollectionAndDocuments = async (
   console.log("done");
 };
 
-export const getCategoriesAndDocuments = async () => {
+export const getCategoriesAndDocuments = async (): Promise<Category[]> => {
   const collectionRef = collection(db, "categories");
   const q = query(collectionRef);
 
   //That gives me an object that I can get a snapshot from:
   const querySnapshot = await getDocs(q);
 
-  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+  return querySnapshot.docs.map(
+    (docSnapshot) => docSnapshot.data() as Category
+  );
+  // When we are working with a thirt party API we often need to cast we are getting back
 
   // const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
   //   // console.log(docSnapshot.data());
@@ -92,10 +105,20 @@ export const getCategoriesAndDocuments = async () => {
   // return categoryMap;
 };
 
+export type AdditionalInformation = {
+  displayName?: string;
+};
+
+export type UserData = {
+  createdAt: Date;
+  displayName: string;
+  email: string;
+};
+
 export const createUserDocumentFromAuth = async (
-  userAuth,
-  additionalInformation = {}
-) => {
+  userAuth: User,
+  additionalInformation = {} as AdditionalInformation
+): Promise<void | QueryDocumentSnapshot<UserData>> => {
   if (!userAuth) return;
   const userDocRef = doc(db, "users", userAuth.uid);
 
@@ -118,7 +141,8 @@ export const createUserDocumentFromAuth = async (
         ...additionalInformation,
       });
     } catch (error) {
-      console.log("error creating the user", error.message);
+      // Inside of a catch, by default it's gonna be a UNKOWN type. Unkown is very similar to any BUT UNKOWN IS NOT RESETABLE
+      console.log("error creating the user", error);
     }
   }
 
@@ -128,29 +152,36 @@ export const createUserDocumentFromAuth = async (
   // return userDocRef;
 
   // Now we want the userSnapshot bc it contains the data while the userDocRef is just a pointer to the space where the data could live
-  return userSnapshot;
+  return userSnapshot as QueryDocumentSnapshot<UserData>;
 };
 
-export const createAuthUserWithEmailAndPassword = async (email, password) => {
+// No need to tell what it returns bc it already knows
+export const createAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password);
 };
 
-export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+export const signInAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
   if (!email || !password) return;
   return await signInWithEmailAndPassword(auth, email, password);
 };
 
 export const signOutUser = async () => await signOut(auth);
 
-export const onAuthStateChangedListener = (callback) =>
+export const onAuthStateChangedListener = (callback: NextOrObserver<User>) =>
   onAuthStateChanged(auth, callback); // Change when a user sign in or sign out and so it calls our callback function
 
 // next: callback,
 // error: errorCallback,
 // complete: completeCallback
 
-export const getCurrentUser = () => {
+export const getCurrentUser = (): Promise<User | null> => {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(
       auth,

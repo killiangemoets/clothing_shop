@@ -1,7 +1,6 @@
 import { AnyAction } from "redux";
 // AnyAction type is an interface that extends upon the action type
 
-/*
 //// TYPE PREDICATE FUNCTION ////
 type Alien = {
   fly: () => {};
@@ -16,7 +15,6 @@ function isHuman(entity: Human | Alien): entity is Human {
   return (entity as Human).speak !== undefined;
   // We have to write (entity as Human).speak bc if we write entity.speak and entity doesn't have the speak method, we're gonna have an error
 }
-*/
 
 /*
 //// INTERSECTION TYPE ////

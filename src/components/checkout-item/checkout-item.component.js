@@ -9,17 +9,17 @@ import {
   RemoveButton,
 } from "./checkout-item.style.js";
 
-import { useContext } from "react";
-import { CartContext } from "../../contexts/cart.context";
+// import { useContext } from "react";
+// import { CartContext } from "../../contexts/cart.context";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectCartItems } from "../../store/cart/cart.selector.js";
+import { selectCartItems } from "../../store/cart/cart.selector";
 import {
   removeItemFromCart,
   addItemToCart,
   clearItemFromCart,
-} from "../../store/cart/cart.action.js";
+} from "../../store/cart/cart.action";
 
 const CheckoutItem = ({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;

@@ -1,11 +1,13 @@
 import { createSelector } from "reselect";
+import { RootState } from "../store";
+
 //createSelector creates for us a memorised selector
 // To save the result of a pure function so when we enter the same inputs again we can give back the output directly without running the function.
 
 import { CategoriesState } from "./category.reducer";
 import { CategoryMap } from "./category.types";
 
-const selectCategoryReducer = (state): CategoriesState => {
+const selectCategoryReducer = (state: RootState): CategoriesState => {
   // console.log("selector 1 fired");
   return state.categories;
 }; // state.cotegories is the categories slice (bc state also containes user and cart)

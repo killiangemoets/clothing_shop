@@ -1,6 +1,7 @@
-import { compose, createStore, applyMiddleware } from "redux";
+import { compose, createStore, applyMiddleware, Middleware } from "redux";
 
-import { persistStore, persistReducer } from "redux-persist";
+import { persistStore, persistReducer, PersistConfig } from "redux-persist";
+
 import storage from "redux-persist/lib/storage";
 
 import { rootReducer } from "./root-reducer";
@@ -13,6 +14,17 @@ import { loggerMiddleware } from "./middleware/logger";
 import createSagaMiddleware from "redux-saga";
 
 import { rootSaga } from "./root-saga";
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+// interface Window already exists and we add the redux dev tools extension to this interface
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+    //We know that it's of the same type than compose
+  }
+}
+// export type RootState2 = typeof rootReducer;
 
 // Middlewares are kind of little library helpers that run before an action hist the reducer
 
@@ -42,7 +54,8 @@ const middleWares = [
   // loggerMiddleware,
   // thunk,
   sagaMiddleware,
-].filter(Boolean);
+].filter((middleware): middleware is Middleware => Boolean(middleware));
+// .filter(Boolean)
 // If we are not in development mode, we will pass false into this array, and we don't want to pass a boolean value into our middleWares array, so we use filter to remove this boolean value from our array
 
 // How the thunk middleware workss:
@@ -66,7 +79,12 @@ const composedEnhancer =
 // const composedEnhancers = compose(applyMiddleware(...middleWares));
 const composedEnhancers = composedEnhancer(applyMiddleware(...middleWares));
 
-const persistConfig = {
+//The PersistConfig object is a type that containes all of the existing values that actually exist inside of a persist config
+type ExtendedPersistConfig = PersistConfig<RootState> & {
+  whiteList: (keyof RootState)[];
+};
+
+const persistConfig: ExtendedPersistConfig = {
   key: "root", // the key is the part that we want to start with, and "root" says that I want to persist the whole thing
   storage,
   //   blackList: ["user"], //We add a black list with the value we don't wanna persist (we can also add a white list with the value we wanne persist)
