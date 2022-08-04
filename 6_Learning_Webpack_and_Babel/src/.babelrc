@@ -1,0 +1,5 @@
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+
+// This compiles react down to ES5 (or another version of JavaScript and HTML that our browser understands)
