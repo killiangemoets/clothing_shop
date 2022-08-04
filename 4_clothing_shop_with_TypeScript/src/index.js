@@ -15,11 +15,13 @@ import { store, persistor } from "./store/store";
 import { Elements } from "@stripe/react-stripe-js";
 import { stripePromise } from "./utils/stripe/stripe.utils";
 
-import "./index.scss";
+// import "./index.scss";
+import { GlobalStyle } from "./global.style";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <GlobalStyle />
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         {/* In loading we can pass a component to render while the data is being loaded */}
