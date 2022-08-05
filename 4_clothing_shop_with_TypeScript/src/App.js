@@ -9,7 +9,7 @@ import { checkUserSession } from "./store/user/user.action";
 // } from "./utils/firebase/firebase.utils";
 // import { setCurrentUser } from "./store/user/user.action";
 
-////// OPTIMIZATION //////
+////////// OPTIMIZATION ////////////
 // When we load the app, the bundle.js load containing the code for ALL the app, all the pages (not really useful)
 // => CODE SPLITTING:
 // We tell React and Webpack to split up our bundle into the appropriate quantities. So I land on the home page, just give me home page stuff
