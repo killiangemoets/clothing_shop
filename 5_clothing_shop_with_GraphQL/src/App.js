@@ -27,9 +27,9 @@ export default App;
 
 //// APOLLO VS REDUX ///
 /*
-- In order to use Apollo and GraphQL on the frontend, the backend must be set up similarly to spit out GraphQL, i.e. the backend must support GraphQL
+In order to use Apollo and GraphQL on the frontend, the backend must be set up similarly to spit out GraphQL, i.e. the backend must support GraphQL
 => There's a lot of code to update on a server in order for it to be a GraphQL server.
 
-But the advantage is that is becomes more transparent to us on the frontend
+But the advantage is that is becomes more transparent to us on the frontend.
 
 */
