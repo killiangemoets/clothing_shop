@@ -151,9 +151,11 @@ export default IndexPage
 // BIG NOTE: Gatsby is smart enough to know that if you export out something that had this graphql "body" to it, it is probably a query that you want to used and pass into the component that you're exporting by default
 // SO THIS QUERY CAN BE USE AS DATA IN THE INDEXPAGE COMPONENT
 
+// we want to sort the markdown remarks by date (by descending order). For that we can use the sort method from graphQL
+
 export const query = graphql`
   query {
-    allMarkdownRemark {
+    allMarkdownRemark(sort: {fields: [frontmatter___date], order: ) {
       totalCount
       edges {
         node {
