@@ -35,12 +35,12 @@ const CartDropdown = () => {
   // useMemo memorizes the value inside of the hook
   // When hundedCount will initizalize, useMemo will calculate the value inside of  this function and then it will memoize that value somewhere
   // So every time you reference it, it will now be using that memoized value unless whatever dependency (from the dependency array) changes
-  // const hundredCount = useMemo(() => {
-  //   console.log("start");
-  //   sleep(2000);
-  //   console.log("end");
-  //   return 100 + count;
-  // }, [count]);
+  const hundredCount = useMemo(() => {
+    console.log("start");
+    sleep(2000);
+    console.log("end");
+    return 100 + count;
+  }, [count]);
 
   // const [temp, setTemp] = useState("A");
 
@@ -58,7 +58,7 @@ const CartDropdown = () => {
   }, []);
 
   //////// useCallback VS useMemo ////////
-  // useCallback memoizes the function itseld
+  // useCallback memoizes the function itself
   // useMemo memoizes the return value of the function
 
   return (

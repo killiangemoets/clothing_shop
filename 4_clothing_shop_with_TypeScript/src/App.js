@@ -49,7 +49,7 @@ const App = () => {
   return (
     <Suspense fallback={<Spinner />}>
       {/* Suspense will tell the React taht you are currently trying to fetch something in suspensed animation, i.e. it's asynchronous, */}
-      {/* When one of our routes or components is being lazily loaded, we wan to render the spinner */}
+      {/* When one of our routes or components is being lazily loaded, we want to render the spinner */}
       {/* For this, we use the fallback: this is where your render the component you want to show when things are loading */}
 
       <Routes>

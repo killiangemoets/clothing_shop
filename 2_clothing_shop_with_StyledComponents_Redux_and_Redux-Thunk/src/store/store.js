@@ -37,7 +37,7 @@ const middleWares = [
 ].filter(Boolean);
 // If we are not in development mode, we will pass false into this array, and we don't want to pass a boolean value into our middleWares array, so we use filter to remove this boolean value from our array
 
-// How the thunk middleware workss:
+// How the thunk middleware works:
 // const thunkMiddleware = (store) => (next) => (action) => {
 //   if (typeof action === "function") {
 //     action(dispatch);
@@ -76,6 +76,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // export const store = createStore(rootReducer, undefined, composedEnhancers);
 export const store = createStore(
   persistedReducer,
+  // rootReducer,
   undefined,
   composedEnhancers
 );

@@ -42,12 +42,12 @@ export const UserProvider = ({ children }) => {
 
   //  INSTEAD OF USING USESTATE, WE NOW USE A REDUCER
 
-  // UseReduce takes 2 arguments:
+  // useReducer takes 2 arguments:
   // - the reducer
   // - the initial value
   // We get back :
   // - the state object, i.e the current value being stored bythe reducer
-  // - the dispatch function, i.e. a function that whenever you it, you pass it an action object.
+  // - the dispatch function, i.e. a function that whenever you call it, you pass it an action object.
   const [state, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
   const { currentUser } = state;

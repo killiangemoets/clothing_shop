@@ -27,7 +27,7 @@ export function* fetchCategoriesAsync() {
   }
 }
 
-// The first generator that we want to write is something that trggers when we call fetchCategoriesStart
+// The first generator that we want to write is something that triggers when we call fetchCategoriesStart
 export function* onFetchCategories() {
   // TakeLatest means that if you hear a bunch of the same action, give me the latest one
   // TakeLatest takes 2 arguments:
