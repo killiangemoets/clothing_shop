@@ -4,12 +4,25 @@ import { StaticImage } from "gatsby-plugin-image"
 
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+
 import * as styles from "../components/index.module.css"
+import styled from "styled-components"
+
 // These are components that come by default with Gatsby
 // Layout component: wraps around some bunch of HTML elements, it provides some styling and some data
 // SEO component: for search engine optimization, we can pass it a title, description, etc.
 
 // NOTE: If you add a new file, Gatsby will generate a new route for your inside of your application, based on the name of the file that you created
+
+// we wrap the Link component that we have from Gatsby
+const BlogLink = styled(Link)`
+  text-decoration: none;
+`
+
+const BlogTitle = styled.h3`
+  margin-bottom: 20px;
+  color: blue;
+`
 
 const links = [
   {
@@ -84,9 +97,11 @@ const IndexPage = ({ data }) => {
         <h4>{data.allMarkdownRemark.totalCount}</h4>
         {data.allMarkdownRemark.edges.map(({ node }) => (
           <div key={node.id}>
-            <span>
-              {node.frontmatter.title} - {node.frontmatter.date}
-            </span>
+            <BlogLink to={node.fields.slug}>
+              <BlogTitle>
+                {node.frontmatter.title} - {node.frontmatter.date}
+              </BlogTitle>
+            </BlogLink>
             <p>{node.excerpt}</p>
           </div>
         ))}
@@ -155,7 +170,7 @@ export default IndexPage
 
 export const query = graphql`
   query {
-    allMarkdownRemark(sort: {fields: [frontmatter___date], order: ) {
+    allMarkdownRemark(sort: { fields: frontmatter___date, order: DESC }) {
       totalCount
       edges {
         node {
@@ -164,6 +179,9 @@ export const query = graphql`
             description
             title
             date
+          }
+          fields {
+            slug
           }
           excerpt
         }
