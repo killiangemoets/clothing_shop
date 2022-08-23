@@ -4,6 +4,7 @@ import { Link } from "gatsby"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
+// UsingDSG
 const UsingDSG = () => (
   <Layout>
     <h1>
