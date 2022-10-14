@@ -20,7 +20,7 @@ import { checkUserSession } from "./store/user/user.action";
 // import Authentication from "./routes/authentication/authentication.component";
 // import Shop from "./routes/shop/shop.component";
 // import Checkout from "./routes/checkout/checkout.component";
-import Spinner from "./components/spinner/spinner.comonent";
+import Spinner from "./components/spinner/spinner.component";
 
 const Home = lazy(() => import("./routes/home/home.component")); // With a dynamic import we use lazy. With lazy, React won't render this until it actually fetches it when it's required. In order to use it, we need to use React Supsense.
 // So React will import this only when we are on the home page

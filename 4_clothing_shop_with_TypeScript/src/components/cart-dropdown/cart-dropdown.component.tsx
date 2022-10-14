@@ -15,32 +15,32 @@ import { useSelector } from "react-redux";
 import { selectCartItems } from "../../store/cart/cart.selector";
 import { useCallback, useState, useMemo } from "react";
 
-const sleep = (milliseconds) => {
-  var start = new Date().getTime();
-  for (let i = 0; i < 1e7; i++) {
-    if (new Date().getTime() - start > milliseconds) {
-      break;
-    }
-  }
-};
+// const sleep = (milliseconds) => {
+//   var start = new Date().getTime();
+//   for (let i = 0; i < 1e7; i++) {
+//     if (new Date().getTime() - start > milliseconds) {
+//       break;
+//     }
+//   }
+// };
 
 const CartDropdown = () => {
   // const { cartItems } = useContext(CartContext);
   const cartItems = useSelector(selectCartItems);
   const navigate = useNavigate();
 
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
 
   // Our really expensive function is running every time the component is refresh (even if count didn't change!) => So we want to run this function only if count changed!
   // useMemo memorizes the value inside of the hook
   // When hundedCount will initizalize, useMemo will calculate the value inside of  this function and then it will memoize that value somewhere
   // So every time you reference it, it will now be using that memoized value unless whatever dependency (from the dependency array) changes
-  const hundredCount = useMemo(() => {
-    console.log("start");
-    sleep(2000);
-    console.log("end");
-    return 100 + count;
-  }, [count]);
+  // const hundredCount = useMemo(() => {
+  //   console.log("start");
+  //   sleep(2000);
+  //   console.log("end");
+  //   return 100 + count;
+  // }, [count]);
 
   // const [temp, setTemp] = useState("A");
 

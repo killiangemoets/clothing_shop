@@ -63,13 +63,13 @@ export function* signInWithGoogle() {
 export function* signInWithEmail({
   payload: { email, password },
 }: EmailSignInStart) {
-  console.log("signInWithEmail");
   try {
     const userCredential = yield* call(
       signInAuthUserWithEmailAndPassword,
       email,
       password
     );
+    console.log({ userCredential });
 
     if (userCredential) {
       const { user } = userCredential;

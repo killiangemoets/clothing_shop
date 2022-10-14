@@ -7,7 +7,7 @@ import {
   Value,
   Price,
   RemoveButton,
-} from "./checkout-item.style.js";
+} from "./checkout-item.style";
 
 // import { useContext } from "react";
 // import { CartContext } from "../../contexts/cart.context";
@@ -21,7 +21,14 @@ import {
   clearItemFromCart,
 } from "../../store/cart/cart.action";
 
-const CheckoutItem = ({ cartItem }) => {
+import { FC } from "react";
+import { CartItem } from "../../store/cart/cart.types";
+
+type CheckoutItemProps = {
+  cartItem: CartItem;
+};
+
+const CheckoutItem: FC<CheckoutItemProps> = ({ cartItem }) => {
   const { name, imageUrl, price, quantity } = cartItem;
 
   // const { clearItemFromCart, addItemToCart, removeItemFromCart } =

@@ -11,7 +11,7 @@ import {
   selectCategoriesIsLoading,
 } from "../../store/categories/category.selector";
 
-import Spinner from "../../components/spinner/spinner.comonent.js";
+import Spinner from "../../components/spinner/spinner.component";
 
 const Category = () => {
   const { category } = useParams<

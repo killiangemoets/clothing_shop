@@ -6,7 +6,7 @@ import {
   CheckoutHeader,
   HeaderBlock,
   Total,
-} from "./checkout.style.js";
+} from "./checkout.style";
 
 import CheckoutItem from "../../components/checkout-item/checkout-item.component";
 

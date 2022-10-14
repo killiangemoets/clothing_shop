@@ -39,7 +39,7 @@ const Navigation = () => {
 
   const signOutHandler = async () => {
     await signOutUser();
-    //   setCurrentUser(null);
+    // setCurrentUser(null);
   };
 
   return (
@@ -49,7 +49,7 @@ const Navigation = () => {
           <CrwnLogo className="logo" />
         </LogoContainer>
         <NavLinksContainer>
-          <NavLink to="/shop">SHOP</NavLink>
+          <NavLink to="/shop">MARKETPLACE</NavLink>
           {currentUser ? (
             <NavLink as="span" onClick={signOutHandler}>
               SIGN OUT{" "}

@@ -9,7 +9,7 @@ import {
   selectCategoriesIsLoading,
 } from "../../store/categories/category.selector";
 
-import Spinner from "../../components/spinner/spinner.comonent";
+import Spinner from "../../components/spinner/spinner.component";
 
 const CategoriesPreview = () => {
   // const { categoriesMap } = useContext(CategoriesContext);

@@ -1,9 +1,12 @@
+// the name of the file will be the name of the route
+
 require("dotenv").config();
 const stripe = require("stripe")(`${process.env.STRIPE_SECRET_KEY}`);
 
 exports.handler = async (event) => {
   try {
     const { amount } = JSON.parse(event.body);
+    console.log("hello from serverless function");
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount,

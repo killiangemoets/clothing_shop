@@ -70,10 +70,9 @@ export function withMatcher(actionCreator: Function) {
     },
   });
 }
-
-export // I want to be able to pass that enumarable member value and then set that as the type
+// I want to be able to pass that enumarable member value and then set that as the type
 // For the payload, we can pass in any payload that we want
-type ActionWithPayload<T, P> = {
+export type ActionWithPayload<T, P> = {
   type: T;
   payload: P;
 };

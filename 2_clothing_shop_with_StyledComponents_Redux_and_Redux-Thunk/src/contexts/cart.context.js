@@ -101,6 +101,7 @@ export const CartProvider = ({ children }) => {
   const { cartItems, cartCount, cartTotal, isCartOpen } = state;
 
   const setIsCartOpen = (bool) => {
+    // dispatch({type: CART_ACTION_TYPES.SET_IS_CART_OPEN, paylod: bool});
     dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool));
   };
 

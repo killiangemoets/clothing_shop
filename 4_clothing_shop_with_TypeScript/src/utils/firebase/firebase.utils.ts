@@ -1,6 +1,7 @@
 // Why putting this content in an utils file? => It's a layer between the frontend and this additional library (easier if I have to make a change/update later)
 
 import { initializeApp } from "firebase/app";
+import { FirebaseError } from "@firebase/util";
 
 import {
   getAuth,
@@ -161,7 +162,20 @@ export const createAuthUserWithEmailAndPassword = async (
   password: string
 ) => {
   if (!email || !password) return;
-  return await createUserWithEmailAndPassword(auth, email, password);
+
+  try {
+    return await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    if (error instanceof FirebaseError) {
+      if (error.code === "auth/email-already-in-use") {
+        alert("Cannot create user, email already in use");
+      } else if (error.code === "auth/weak-password") {
+        alert("Password should be at least 6 characters");
+      } else {
+        console.log("user creation encountered an error", error);
+      }
+    }
+  }
 };
 
 export const signInAuthUserWithEmailAndPassword = async (
@@ -169,7 +183,23 @@ export const signInAuthUserWithEmailAndPassword = async (
   password: string
 ) => {
   if (!email || !password) return;
-  return await signInWithEmailAndPassword(auth, email, password);
+  try {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    return result;
+  } catch (error: unknown) {
+    if (error instanceof FirebaseError) {
+      switch (error.code) {
+        case "auth/wrong-password":
+          alert("Incorrect password for email");
+          break;
+        case "auth/user-not-found":
+          alert("No user associated with this email");
+          break;
+        default:
+          console.log(error);
+      }
+    }
+  }
 };
 
 export const signOutUser = async () => await signOut(auth);

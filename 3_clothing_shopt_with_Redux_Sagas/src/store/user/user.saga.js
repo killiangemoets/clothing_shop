@@ -43,7 +43,7 @@ export function* signInWithGoogle() {
   }
 }
 
-//The action get passed in the method. And the ation has the payload, which is going to be the email and the password
+//The action get passed in the method. And the action has the payload, which is going to be the email and the password
 // export function* signInWithEmail(action) {
 export function* signInWithEmail({ payload: { email, password } }) {
   console.log("signInWithEmail");
